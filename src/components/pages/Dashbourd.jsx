@@ -12,7 +12,7 @@ function Dashbourd() {
   const handleClose = () => setOpen(false);
 
   return (
-    <div className="px-6 py-6 bg-[#f3f9ff] h-screen">
+    <div className="px-6 py-6 bg-[#f3f9ff] h-screen fixed w-full">
       <div className="text-xl font-semibold mb-4">Items Price List</div>
       <div className="">
         <div className="flex flex-col">
