@@ -1,71 +1,32 @@
-import React from 'react'
-import { Table } from "rsuite";
-import mockUsers from "../../assets/mocks/ProductMocks";
+import React from 'react';
 
-const { Column, HeaderCell, Cell } = Table;
-const data = mockUsers(20);
-
-function DashbourdTable() {
+function DashboardTable() {
   return (
-    <div>
-    <Table
-      height={550}
-      data={data}
-      onRowClick={(rowData) => {
-        console.log(rowData);
-      }}
-      style={{ width: "100%" }}
-    >
-      <Column flexGrow={2} align="center">
-        <HeaderCell className="bg-gray-200 text-gray-700">Code</HeaderCell>
-        <Cell dataKey="id" />
-      </Column>
-
-      <Column flexGrow={3}>
-        <HeaderCell className="bg-gray-200 text-gray-700">
-          Custormer Name
-        </HeaderCell>
-        <Cell dataKey="firstName" />
-      </Column>
-
-      <Column flexGrow={3}>
-        <HeaderCell className="bg-gray-200 text-gray-700">
-          Supplier Name
-        </HeaderCell>
-        <Cell dataKey="lastName" />
-      </Column> 
-      <Column flexGrow={2}>
-        <HeaderCell className="bg-gray-200 text-gray-700">Price</HeaderCell>
-        <Cell dataKey="age" />
-      </Column>
-
-      <Column flexGrow={1}>
-        <HeaderCell>Action</HeaderCell>
-        <Cell>
-          {(rowData) => (
-            <>
-              <span
-                className="material-symbols-outlined sidebar-icon text-lg font-medium text-txtdarkblue mr-3 cursor-pointer"
-                onClick={() => handleEditItem(rowData)}
-              >
-                edit
-              </span>
-              <span
-                className="material-symbols-outlined sidebar-icon text-lg font-medium text-red mr-3 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteOpen(rowData.id);
-                }}
-              >
-                delete
-              </span>
-            </>
-          )}
-        </Cell>
-      </Column>
-    </Table>
-  </div>
-  )
+    <div className="overflow-x-auto">
+      <table className="table-auto border-collapse w-full mt-8 border border-gray-300">
+        <thead className=''>
+          <tr className="bg-gray-100 text-sm sm:text-base">
+            <th className="border border-gray-300 px-2 py-2 text-left w-2/3">Name</th>
+            <th className="border border-gray-300 px-2 py-2 text-left">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="text-sm sm:text-base">
+            <td className="border border-gray-300 px-2 py-2">Item One</td>
+            <td className="border border-gray-300 px-2 py-2">$10.00</td>
+          </tr>
+          <tr className="bg-gray-50 text-sm sm:text-base">
+            <td className="border border-gray-300 px-2 py-2"></td>
+            <td className="border border-gray-300 px-2 py-2">$15.00</td>
+          </tr>
+          <tr className="text-sm sm:text-base">
+            <td className="border border-gray-300 px-2 py-2">Item Three</td>
+            <td className="border border-gray-300 px-2 py-2">$20.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
-export default DashbourdTable
+export default DashboardTable;

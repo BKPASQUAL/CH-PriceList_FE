@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (max-width: 768px) {
+    .rs-table-cell {
+      font-size: 12px;
+      padding: 5px;
+    }
+  
+    .rs-table-header-cell {
+      font-size: 14px;
+    }
+  }
+  
