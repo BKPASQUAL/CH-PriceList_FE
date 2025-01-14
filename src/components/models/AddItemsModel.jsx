@@ -1,27 +1,43 @@
-// AddItemsModel.js
 import React from "react";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   Button,
   TextField,
   Box,
   Grid,
   Typography,
 } from "@mui/material";
+import { useAddItemMutation } from "../../store/api/itemApi";
 
 function AddItemsModel({ open, handleClose }) {
   const [itemCode, setItemCode] = React.useState("");
   const [itemName, setItemName] = React.useState("");
-  const [itemPrice, setItemPrice] = React.useState("");
+  const [sellingPrice, setsellingPrice] = React.useState("");
 
-  const handleSubmit = () => {
-    console.log("Item Code:", itemCode);
-    console.log("Item Name:", itemName);
-    console.log("Item Price:", itemPrice);
-    handleClose();
+  const [addItem, { isLoading, isSuccess, isError, error }] = useAddItemMutation();
+
+  const handleSubmit = async () => {
+    try {
+      const newItem = {
+        itemCode,
+        itemName,
+        sellingPrice: parseFloat(sellingPrice), // Ensure price is a number
+      };
+
+      await addItem(newItem).unwrap();
+
+      console.log("Item successfully added:", newItem);
+      handleClose(); // Close the dialog after successful submission
+
+      // Clear form inputs
+      setItemCode("");
+      setItemName("");
+      setsellingPrice("");
+    } catch (err) {
+      console.error("Failed to add item:", err);
+    }
   };
 
   return (
@@ -84,8 +100,8 @@ function AddItemsModel({ open, handleClose }) {
                 size="small"
                 label="Item Price"
                 variant="outlined"
-                value={itemPrice}
-                onChange={(e) => setItemPrice(e.target.value)}
+                value={sellingPrice}
+                onChange={(e) => setsellingPrice(e.target.value)}
                 type="number"
                 sx={{
                   fontSize: "16px",
@@ -112,10 +128,21 @@ function AddItemsModel({ open, handleClose }) {
           variant="contained"
           color="primary"
           className="w-1/2"
+          disabled={isLoading} // Disable button while loading
         >
-          Add Item
+          {isLoading ? "Adding..." : "Add Item"}
         </Button>
       </div>
+      {isError && (
+        <Typography color="error" variant="body2" align="center">
+          {error?.data?.message || "Failed to add item."}
+        </Typography>
+      )}
+      {isSuccess && (
+        <Typography color="primary" variant="body2" align="center">
+          Item added successfully!
+        </Typography>
+      )}
     </Dialog>
   );
 }

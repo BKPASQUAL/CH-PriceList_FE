@@ -1,72 +1,25 @@
 import React from "react";
-
-const mockData = [
-  {
-    id: 1,
-    itemCode: "OR1002",
-    itemName: "Orange One Gan",
-    price: "Rs 1200.00/=",
-  },
-  {
-    id: 2,
-    itemCode: "AP2001",
-    itemName: "Apple Fresh",
-    price: "Rs 1500.00/=",
-  },
-  {
-    id: 3,
-    itemCode: "BN3003",
-    itemName: "Banana Delight",
-    price: "Rs 800.00/=",
-  },
-  {
-    id: 3,
-    itemCode: "BN3003",
-    itemName: "Banana Delight",
-    price: "Rs 800.00/=",
-  },
-  {
-    id: 3,
-    itemCode: "BN3003",
-    itemName: "Banana Delight",
-    price: "Rs 800.00/=",
-  },
-  {
-    id: 1,
-    itemCode: "OR1002",
-    itemName: "Orange One Gan",
-    price: "Rs 1200.00/=",
-  },
-  {
-    id: 2,
-    itemCode: "AP2001",
-    itemName: "Apple Fresh",
-    price: "Rs 1500.00/=",
-  },
-  {
-    id: 3,
-    itemCode: "BN3003",
-    itemName: "Banana Delight",
-    price: "Rs 800.00/=",
-  },
-  {
-    id: 3,
-    itemCode: "BN3003",
-    itemName: "Banana Delight",
-    price: "Rs 800.00/=",
-  },
-  {
-    id: 3,
-    itemCode: "BN3003",
-    itemName: "Banana Delight",
-    price: "Rs 800.00/=",
-  },
-];
+import { useGetAllItemsQuery } from "../../store/api/itemApi";
 
 function DashboardTable() {
+  // Fetch data using the `useGetAllItemsQuery` hook
+  const { data: items, isLoading, isError, error } = useGetAllItemsQuery();
+  const getAllitems = items?.items || [];
+
+  console.log("data",getAllitems)
+
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error: {error?.data?.message || "Something went wrong"}</p>;
+  }
+
   return (
     <div className="overflow-x-auto overflow-y-auto max-h-[700px] bg-gray-50 p-2 rounded-lg mt-2">
-      {mockData.map((item) => (
+      {getAllitems?.map((item) => (
         <div
           key={item.id}
           className="bg-transparent border border-gray-300 rounded-lg mb-2 shadow-sm"
@@ -83,7 +36,7 @@ function DashboardTable() {
               </div>
               <div className="flex items-center mb-2">
                 <h1 className="w-1/3 text-gray-600 font-semibold">Price</h1>
-                <p className="text-green-600 font-bold">: {item.price}</p>
+                <p className="text-green-600 font-bold">: Rs {item.sellingPrice}/=</p>
               </div>
             </div>
             <div className="flex justify-end gap-4">
@@ -97,6 +50,7 @@ function DashboardTable() {
           </div>
         </div>
       ))}
+      <div className="h-20"></div>
     </div>
   );
 }
