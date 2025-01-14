@@ -35,13 +35,13 @@ const mockData = [
 
 function DashboardTable() {
   return (
-    <div className="overflow-x-auto overflow-y-auto max-h-[700px] bg-gray-50 p-4 rounded-lg mt-4">
+    <div className="overflow-x-auto overflow-y-auto max-h-[700px] bg-gray-50 p-2 rounded-lg mt-4">
       {mockData.map((item) => (
         <div
           key={item.id}
           className="bg-white border border-gray-300 rounded-lg mb-4 shadow-sm"
         >
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-2 border-b border-gray-200">
             <div className="mb-4">
               <div className="flex items-center mb-2">
                 <h1 className="w-1/3 text-gray-600 font-semibold">Item Code</h1>
