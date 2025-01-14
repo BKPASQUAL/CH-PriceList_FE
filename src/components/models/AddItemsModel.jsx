@@ -33,10 +33,13 @@ function AddItemsModel({ open, handleClose }) {
       PaperProps={{
         sx: {
           borderRadius: "10px",
+          padding:"4px"
         },
+
+    
       }}
     >
-      <DialogTitle >
+      <DialogTitle>
         <Typography variant="h6">Add New Item</Typography>
       </DialogTitle>
 
@@ -97,15 +100,14 @@ function AddItemsModel({ open, handleClose }) {
           </Grid>
         </Box>
       </DialogContent>
-
-      <DialogActions>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
+      <div className="pb-4 flex justify-end px-6 gap-2">
+        <Button onClick={handleSubmit} variant="contained" color="primary" className="w-1/2">
           Add Item
         </Button>
-        <Button onClick={handleClose} variant="outlined" color="secondary">
+        <Button onClick={handleClose} variant="contained" color="error" className="w-1/2">
           Cancel
         </Button>
-      </DialogActions>
+      </div>
     </Dialog>
   );
 }

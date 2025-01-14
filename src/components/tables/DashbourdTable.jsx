@@ -31,6 +31,36 @@ const mockData = [
     itemName: "Banana Delight",
     price: "Rs 800.00/=",
   },
+  {
+    id: 1,
+    itemCode: "OR1002",
+    itemName: "Orange One Gan",
+    price: "Rs 1200.00/=",
+  },
+  {
+    id: 2,
+    itemCode: "AP2001",
+    itemName: "Apple Fresh",
+    price: "Rs 1500.00/=",
+  },
+  {
+    id: 3,
+    itemCode: "BN3003",
+    itemName: "Banana Delight",
+    price: "Rs 800.00/=",
+  },
+  {
+    id: 3,
+    itemCode: "BN3003",
+    itemName: "Banana Delight",
+    price: "Rs 800.00/=",
+  },
+  {
+    id: 3,
+    itemCode: "BN3003",
+    itemName: "Banana Delight",
+    price: "Rs 800.00/=",
+  },
 ];
 
 function DashboardTable() {
