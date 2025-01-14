@@ -13,7 +13,7 @@ function Dashbourd() {
 
   return (
     <div className="px-6 py-6 bg-[#f3f9ff] h-screen fixed w-full">
-      <div className="text-2xl font-bold mb-4">Items Price List</div>
+      <div className="text-2xl font-bold mb-4">Items Price List | 20</div>
       <div className="">
         <div className="flex flex-col">
           <input
@@ -40,7 +40,7 @@ function Dashbourd() {
       <div>
         <DashbourdTable />
       </div>
-      <AddItemsModel open={open} handleClose={handleClose} />
+      <AddItemsModel open={open} handleClose={handleClose} title="Add New Item"/>
     </div>
   );
 }

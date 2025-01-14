@@ -27,13 +27,12 @@ export const itemApi = api.injectEndpoints({
     }),
 
     updateItem: builder.mutation({
-      query: ({ id, formData }) => ({
-        url: `items/${id}`,
+      query: ({ id, ...data }) => ({
+        url: `/items/${id}`,
         method: "PUT",
-        body: formData,
+        body: data,
       }),
     }),
-
     getMinimumQuantity: builder.query({
       query: () => "items/minimumQuantity",
     }),
