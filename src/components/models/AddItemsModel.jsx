@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import {
   useAddItemMutation,
+  useGetAllItemsQuery,
   useGetItemByIdQuery,
   useUpdateItemMutation,
 } from "../../store/api/itemApi";
@@ -23,15 +24,16 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
   const [itemCode, setItemCode] = React.useState("");
   const [itemName, setItemName] = React.useState("");
   const [sellingPrice, setSellingPrice] = React.useState("");
-  const [category, setCategory] = React.useState(""); 
+  const [category, setCategory] = React.useState("");
 
   const [addItem, { isLoading: isAdding, isSuccess, isError, error }] =
     useAddItemMutation();
 
   const {
     data: fetchProductDataById,
-    isLoading: isFetching,
+    isFetching,
     isError: fetchError,
+    refetch: refetchItemById,
   } = useGetItemByIdQuery(itemId, {
     skip: !itemId,
   });
@@ -41,17 +43,24 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
     { isLoading: isUpdating, isError: isUpdateError, error: updateError },
   ] = useUpdateItemMutation();
 
-  const getItemsById = fetchProductDataById?.item || [];
-  console.log("getItemsById", getItemsById);
+  const { refetch: refetchAllItems } = useGetAllItemsQuery();
 
   useEffect(() => {
-    if (getItemsById && itemId) {
-      setItemCode(getItemsById.itemCode || "");
-      setItemName(getItemsById.itemName || "");
-      setSellingPrice(getItemsById.sellingPrice?.toString() || "");
-      setCategory(getItemsById.category || ""); 
+    if (itemId && open) {
+      // Refetch item details when dialog opens or itemId changes
+      refetchItemById();
     }
-  }, [getItemsById, itemId]);
+  }, [itemId, open, refetchItemById]);
+
+  useEffect(() => {
+    if (fetchProductDataById && itemId) {
+      const fetchedItem = fetchProductDataById.item || {};
+      setItemCode(fetchedItem.itemCode || "");
+      setItemName(fetchedItem.itemName || "");
+      setSellingPrice(fetchedItem.sellingPrice?.toString() || "");
+      setCategory(fetchedItem.category || "");
+    }
+  }, [fetchProductDataById, itemId]);
 
   const handleSubmit = async () => {
     try {
@@ -59,7 +68,7 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
         itemCode,
         itemName,
         sellingPrice: parseFloat(sellingPrice),
-        category, 
+        category,
       };
 
       if (itemId) {
@@ -71,7 +80,7 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
       }
 
       handleClose();
-
+      refetchAllItems();
       setItemCode("");
       setItemName("");
       setSellingPrice("");
@@ -121,12 +130,6 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
                   variant="outlined"
                   value={itemCode}
                   onChange={(e) => setItemCode(e.target.value)}
-                  sx={{
-                    fontSize: "16px",
-                    "& input": {
-                      fontSize: "16px",
-                    },
-                  }}
                 />
               </Grid>
 
@@ -138,12 +141,6 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
                   variant="outlined"
                   value={itemName}
                   onChange={(e) => setItemName(e.target.value)}
-                  sx={{
-                    fontSize: "16px",
-                    "& input": {
-                      fontSize: "16px",
-                    },
-                  }}
                 />
               </Grid>
 
@@ -156,12 +153,6 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
                   value={sellingPrice}
                   onChange={(e) => setSellingPrice(e.target.value)}
                   type="number"
-                  sx={{
-                    fontSize: "16px",
-                    "& input": {
-                      fontSize: "16px",
-                    },
-                  }}
                 />
               </Grid>
 
@@ -197,21 +188,16 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
           onClick={handleSubmit}
           variant="contained"
           className="w-1/2"
-          disabled={isAdding}
-          sx={{
-            backgroundColor: "#000000", 
-            color: "#ffffff", 
-            "&:hover": {
-              backgroundColor: "#333333", 
-            },
-          }}
+          disabled={isAdding || isUpdating}
         >
-          {isAdding ? "Adding..." : itemId ? "Update " : "Add Item"}
+          {isAdding || isUpdating ? "Processing..." : itemId ? "Update" : "Add"}
         </Button>
       </div>
-      {isError && (
+      {(isError || isUpdateError) && (
         <Typography color="error" variant="body2" align="center">
-          {error?.data?.message || "Failed to add item."}
+          {error?.data?.message ||
+            updateError?.data?.message ||
+            "An error occurred."}
         </Typography>
       )}
       {isSuccess && (

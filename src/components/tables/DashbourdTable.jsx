@@ -4,14 +4,14 @@ import AddItemsModel from "../models/AddItemsModel";
 
 function DashboardTable() {
   const [open, setOpen] = React.useState(false);
-  const [selectedItemId, setSelectedItemId] = React.useState(null); // State to store selected item id
+  const [selectedItemId, setSelectedItemId] = React.useState(null); 
 
   const handleOpen = (_id) => {
-    setSelectedItemId(_id); // Set the selected item's id
+    setSelectedItemId(_id); 
     setOpen(true);
   };
   const handleClose = () => {
-    setSelectedItemId(null); // Reset the selected item id when closing
+    setSelectedItemId(null); 
     setOpen(false);
   };
 

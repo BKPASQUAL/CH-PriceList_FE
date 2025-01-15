@@ -22,7 +22,11 @@ function Dashbourd() {
         <div className="text-2xl font-bold mb-4">
           Items Price List | {data?.count}
         </div>
-        <FiPower size={18} className="flex flex-row items-center mt-2 font-extrabold text-red-600 hover:text-black"/>
+        <FiPower
+          size={18}
+          className="cursor-pointer font-extrabold text-red-600 hover:text-black"
+          title="Logout"
+        />
       </div>
       <div className="">
         <div className="flex flex-col">
