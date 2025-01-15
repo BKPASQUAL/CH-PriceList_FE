@@ -38,6 +38,7 @@ function DashboardTable() {
           <div className="p-2 border-b border-gray-200">
             <div className="mb-4">
               <div className="flex items-center mb-2">
+                <div></div>
                 <h1 className="w-1/3 text-gray-600 font-semibold">Item Code</h1>
                 <p className="text-gray-800">: {item.itemCode}</p>
               </div>

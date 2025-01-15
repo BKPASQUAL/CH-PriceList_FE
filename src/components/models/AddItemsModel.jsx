@@ -8,22 +8,32 @@ import {
   Box,
   Grid,
   Typography,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
-import { useAddItemMutation, useGetItemByIdQuery, useUpdateItemMutation } from "../../store/api/itemApi";
+import {
+  useAddItemMutation,
+  useGetItemByIdQuery,
+  useUpdateItemMutation,
+} from "../../store/api/itemApi";
 
 function AddItemsModel({ open, handleClose, title, itemId }) {
   const [itemCode, setItemCode] = React.useState("");
   const [itemName, setItemName] = React.useState("");
   const [sellingPrice, setSellingPrice] = React.useState("");
+  const [category, setCategory] = React.useState(""); 
 
-  const [addItem, { isLoading: isAdding, isSuccess, isError, error }] = useAddItemMutation();
+  const [addItem, { isLoading: isAdding, isSuccess, isError, error }] =
+    useAddItemMutation();
 
   const {
     data: fetchProductDataById,
     isLoading: isFetching,
     isError: fetchError,
   } = useGetItemByIdQuery(itemId, {
-    skip: !itemId, 
+    skip: !itemId,
   });
 
   const [
@@ -31,45 +41,48 @@ function AddItemsModel({ open, handleClose, title, itemId }) {
     { isLoading: isUpdating, isError: isUpdateError, error: updateError },
   ] = useUpdateItemMutation();
 
-
   const getItemsById = fetchProductDataById?.item || [];
-  console.log("getItemsById",getItemsById)
+  console.log("getItemsById", getItemsById);
+
   useEffect(() => {
     if (getItemsById && itemId) {
       setItemCode(getItemsById.itemCode || "");
       setItemName(getItemsById.itemName || "");
       setSellingPrice(getItemsById.sellingPrice?.toString() || "");
+      setCategory(getItemsById.category || ""); 
     }
   }, [getItemsById, itemId]);
 
-const handleSubmit = async () => {
-  try {
-    const itemData = {
-      itemCode,
-      itemName,
-      sellingPrice: parseFloat(sellingPrice),
-    };
+  const handleSubmit = async () => {
+    try {
+      const itemData = {
+        itemCode,
+        itemName,
+        sellingPrice: parseFloat(sellingPrice),
+        category, 
+      };
 
-    if (itemId) {
-      // Update existing item
-      await updateItem({ id: itemId, ...itemData }).unwrap();
-      console.log("Item successfully updated:", itemData);
-    } else {
-      // Add new item
-      await addItem(itemData).unwrap();
-      console.log("Item successfully added:", itemData);
+      if (itemId) {
+        await updateItem({ id: itemId, ...itemData }).unwrap();
+        console.log("Item successfully updated:", itemData);
+      } else {
+        await addItem(itemData).unwrap();
+        console.log("Item successfully added:", itemData);
+      }
+
+      handleClose();
+
+      setItemCode("");
+      setItemName("");
+      setSellingPrice("");
+      setCategory("");
+    } catch (err) {
+      console.error(
+        itemId ? "Failed to update item:" : "Failed to add item:",
+        err
+      );
     }
-
-    handleClose();
-
-    // Clear fields after successful operation
-    setItemCode("");
-    setItemName("");
-    setSellingPrice("");
-  } catch (err) {
-    console.error(itemId ? "Failed to update item:" : "Failed to add item:", err);
-  }
-};
+  };
 
   return (
     <Dialog
@@ -151,6 +164,22 @@ const handleSubmit = async () => {
                   }}
                 />
               </Grid>
+
+              <Grid item xs={12}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    label="Category"
+                  >
+                    <MenuItem value="Electronics">Electronics</MenuItem>
+                    <MenuItem value="Clothing">Clothing</MenuItem>
+                    <MenuItem value="Accessories">Accessories</MenuItem>
+                    <MenuItem value="Books">Books</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
           </Box>
         )}
@@ -167,9 +196,15 @@ const handleSubmit = async () => {
         <Button
           onClick={handleSubmit}
           variant="contained"
-          color="primary"
           className="w-1/2"
           disabled={isAdding}
+          sx={{
+            backgroundColor: "#000000", 
+            color: "#ffffff", 
+            "&:hover": {
+              backgroundColor: "#333333", 
+            },
+          }}
         >
           {isAdding ? "Adding..." : itemId ? "Update " : "Add Item"}
         </Button>
