@@ -8,10 +8,10 @@ function App() {
     <Routes>
       {/* <Route path="/" element={<Product />} /> */}
 
-      <Route path="/" element={<Dashbourd />}>
+      <Route path="dashbourd" element={<Dashbourd />}>
         {/* Home layout with sidebar */}
       </Route>
-      <Route path="login" element={<Login />} /> 
+      <Route path="/" element={<Login />} /> 
     </Routes>
   );
 }
